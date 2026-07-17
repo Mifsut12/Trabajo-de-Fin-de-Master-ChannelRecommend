@@ -1,0 +1,187 @@
+
+/* Control preciso de los pixeles de los bordes */
+
+html{
+    box-sizing: border-box;
+    
+}
+
+*,*::after,*::before{
+    box-sizing: inherit;
+}
+
+body{
+    color: white;
+    background-color: black;
+    margin: 0%;
+    text-align: center;
+}
+/* Estilo de la cabecera */
+
+
+
+
+.header-nav{
+    background-color: black;   
+    padding: 0;
+    margin: 0;
+    border: solid red thin;
+    
+}
+
+.header-nav-ul{
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    color: white;
+    
+}
+
+.header-nav-ul-li a:link, .header-nav-ul-li a:visited{
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+
+/* Centrar elementos de mensaje de bienvenida e inicio de sesión */
+.main{
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.div-inicioDeSesion{
+    
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: yellow;
+   
+}
+
+
+.div-inicioDeSesion-form{
+    border: solid medium yellow;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    
+    
+    
+}
+
+.div-inicioDeSesion-form > *{
+    flex: 45%;
+}
+
+
+
+
+
+
+
+/* Estilos del pie de página */
+
+
+.footer{
+    background-color: white;
+    color: black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+    left: 0%;
+    border: solid thin black;
+    
+}
+
+.footer-h2,.footer-h3{
+    width: 100%;
+    text-align: center;
+}
+
+.footer-h4, .footer-h5{
+    width: 50%;
+    text-align: center;
+}
+
+a{
+    display: block;
+}
+
+
+/* Enlaces */
+a:link{
+    color: white;
+}
+
+a:visited , td a {
+    color:white
+}
+/* Tablas  */
+table{
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+table td, table th{
+    border: solid thin white;
+}
+
+/* Cabecera del login */
+
+.header-login{
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: solid thin white;
+}
+
+
+
+
+a.enlaces{
+    color: red;
+}
+
+div.div-menuUsuarios, div.div-menuCanales,div.div-menuProgramas, div.div-menuReviews{
+    border: solid thin white;
+    width: 20vw;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 5vh;
+    margin-top: 5vh;
+}
+
+form {
+    border: solid thin white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+form > * {
+    width: 100%;
+}
