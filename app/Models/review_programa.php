@@ -15,7 +15,4 @@ class review_programa extends Model
     public function programa(){
         return $this->belongsTo(Programa::class, 'ID_Programa');
     }
-
-
-    
 }

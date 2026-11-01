@@ -18,7 +18,7 @@
 
         <a class="enlaces" href="/guia">Guia</a>
     </header>
-    <h1> Introduzca los datos del usuarios a registrar </h1>
+    <h1> Introduzca los datos del canal a registrar </h1>
 
     <div class = "div-inicioDeSesion">
     <form class = "div-inicioDeSesion-form" method = "post" action = "/canales">

@@ -7,71 +7,65 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Programa;
+use App\Models\Canal;
 use DateTime;
 
 
 class ProgramaController extends Controller
 {
+    //Función dedicada a obtener los mejores programas
+    public function inicio(){
+        $mejoresProgramas = Programa::orderBy('puntuacion','desc')->take(5)->get();
+        $mejorCadena = Canal::orderBy('Puntuacion_Global', 'desc')->first();
+        return view('Welcome')
+        ->with('mejoresProgramas',$mejoresProgramas)
+        ->with('mejorCadena', $mejorCadena);
+    }
+
+
     //Función para la creación de un programa
     public function crear(Request $request, string $id){
-            
-        if(Auth::user()->Admin == 1){    
-            //Obtener los parametros del formulario
-        
-            $nombre = $request->input('Nombre');
-            $fecha = $request->input('Fecha');
-            $duracion = $request->input('Duracion');
-            $hora = $request->input('Hora');
-            $cadena = $request->input('Cadena');
-
-            
-            $diaTiempo = new DateTime($fecha. ' '. $hora);
-            $diaTiempoActual = new DateTime();
-        
-            if($diaTiempo > $diaTiempoActual){
-                
-                //Conectar a la base de datos y verificar que el canal existe
-                if(DB::table('Canales')->where('name', $cadena)->exists()
-                ){
-                    return view('mensajeError')->with('mensaje','La cadena especificada no existe');
-                }else{
-                    //Insertar en la base de datos
-                    DB::table('programa')->insert([
-                        'name' => $nombre,
-                        'Fecha_transmision' => $fecha,
-                        'Duracion' => $duracion,
-                        'Hora_emision' => $hora,
-                        'ID_Canal' => $id,
-                        'Puntuacion' => 0
-                    ]);
-
-                    return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
-                }   
+        //Obtener los parametros del formulario
+        $nombre = $request->input('Nombre');
+        $fecha = $request->input('Fecha');
+        $duracion = $request->input('Duracion');
+        $hora = $request->input('Hora');
+        $cadena = $request->input('Cadena');
+        $diaTiempo = new DateTime($fecha. ' '. $hora);
+        $diaTiempoActual = new DateTime();
+        if($diaTiempo > $diaTiempoActual){
+            //Conectar a la base de datos y verificar que el canal existe
+            if(DB::table('Canales')->where('name', $cadena)->exists()
+            ){
+                return view('mensajeError')->with('mensaje','La cadena especificada no existe');
             }else{
-                return view('mensajeError')->with('mensaje','Parametros erroneos');
-            }
+                //Insertar en la base de datos
+                DB::table('programa')->insert([
+                    'name' => $nombre,
+                    'Fecha_transmision' => $fecha,
+                    'Duracion' => $duracion,
+                    'Hora_emision' => $hora,
+                    'ID_Canal' => $id,
+                    'Puntuacion' => 0
+                ]);
+                return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
+            }   
         }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
+            return view('mensajeError')->with('mensaje','Parametros erroneos');
         }
     }
 
 
    
     public function consultarTodos(){
-            
-          
         $programas = DB::table('programa')->get();
         return view('verTodosProgramas')->with('programas',$programas);
-        
     }
 
     public function guia(){
-        
         $programas = Programa::whereDate('Fecha_transmision', '>=', now())->orderByDesc('Fecha_transmision')->get();
-
         return view('guia')->with('programas', $programas);
     }
-
 
     //Función para la creación de un programa
     public function consultar(String $id){
@@ -81,7 +75,6 @@ class ProgramaController extends Controller
         }else{
             return view('datosProgramasPublico')->with('programas',$programa);
         }
-        
     }
 
 
@@ -90,69 +83,57 @@ class ProgramaController extends Controller
 
     //Función dedicada al borrado de un canal
     public function eliminar (string $id){
-        //Comprobar permisos de usuario que ejecute la operacion.
-        if(Auth::user()->Admin == 1){
-            //Verificar que el usuario existe
-            $programa = DB::table('programa')->where('id',$id)->first();
-            //En caso de que exista
-            if($programa != null){
-                //Borrar
-                $programa = DB::table('programa')->where('id',$id)->delete();
+        //Verificar que el usuario existe
+        $programa = DB::table('programa')->where('id',$id)->first();
+        //En caso de que exista
+        if($programa != null){
+            //Borrar
+            $programa = DB::table('programa')->where('id',$id)->delete();
 
-                return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
-            //caso contrario
-            }else{
-                return view('mensajeError')->with('mensaje','El programa especificado no existe');
-            }
+            return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
+        //caso contrario
         }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
+            return view('mensajeError')->with('mensaje','El programa especificado no existe');
         }
     }
 
 
     //Función para la actualizacion de un programa
     public function actualizar(Request $request, string $id){
-            
-        if(Auth::user()->Admin == 1){    
-            //Obtener los parametros del formulario
-        
-            $nombre = $request->input('Nombre');
-            $fecha = $request->input('Fecha');
-            $duracion = $request->input('Duracion');
-            $hora = $request->input('Hora');
-            $cadena = $request->input('Cadena');
-
-            
-            $diaTiempo = new DateTime($fecha. ' '. $hora);
-            $diaTiempoActual = new DateTime();
-        
-            if($diaTiempo > $diaTiempoActual){
-                $canal = DB::table('Canales')->where('name', $cadena)->first();
-                //Conectar a la base de datos y verificar que el canal existe
-                if(empty($canal)
-                ){
-                    return view('mensajeError')->with('mensaje','La cadena especificada no existe');
-                }else{
-                    $programa = Programa::where('id', $id)->first();
-
-                    $programa->name = $nombre;
-                    $programa->Fecha_Transmision = $fecha;
-                    $programa->Duracion = $duracion;
-                    $programa->Hora_Emision = $hora;
-                    $programa->ID_Canal = $canal->id;
-                    $programa->save();
-
-                    return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
-                }   
+        //Obtener los parametros del formulario
+        $nombre = $request->input('Nombre');
+        $fecha = $request->input('Fecha');
+        $duracion = $request->input('Duracion');
+        $hora = $request->input('Hora');
+        $cadena = $request->input('Cadena');
+        $diaTiempo = new DateTime($fecha. ' '. $hora);
+        $diaTiempoActual = new DateTime();
+    
+        if($diaTiempo > $diaTiempoActual){
+            $canal = DB::table('Canales')->where('name', $cadena)->first();
+            //Conectar a la base de datos y verificar que el canal existe
+            if(empty($canal)
+            ){
+                return view('mensajeError')->with('mensaje','La cadena especificada no existe');
             }else{
-                return view('mensajeError')->with('mensaje','Parametros erroneos, la fecha es inferior a la actual');
-            }
+                $programa = Programa::where('id', $id)->first();
+                $programa->name = $nombre;
+                $programa->Fecha_Transmision = $fecha;
+                $programa->Duracion = $duracion;
+                $programa->Hora_Emision = $hora;
+                $programa->ID_Canal = $canal->id;
+                $programa->save();
+                return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
+            }   
         }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
+            return view('mensajeError')->with('mensaje','Parametros erroneos, la fecha es inferior a la actual');
         }
     }
     
-
+    public function obtenerLista(){
+        $programas = Programa::whereDate('Fecha_transmision', '<=', now())->orderByDesc('Fecha_transmision')->get();
+        return view('ListaCanales')->with('programas', $programas);
+    }
 
     public function formularioModificacionPrograma(String $id){
         if(Auth::user()->Admin == 1){
@@ -170,16 +151,4 @@ class ProgramaController extends Controller
             return view('mensajeError')->with('mensaje','Acceso no autorizado');
         }
     }
-
-
-    public function obtenerLista(){
-        if(!empty(Auth::user())){
-            $programas = Programa::whereDate('Fecha_transmision', '<=', now())->orderByDesc('Fecha_transmision')->take(10)->get();
-
-            return view('ListaCanales')->with('programas', $programas);
-        }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
-        }
-    }
-    
 }

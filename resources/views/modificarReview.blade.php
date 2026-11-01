@@ -27,9 +27,9 @@
 
             
             <label for="Contenido"> Contenido</label>    
-            <textarea id= "Contenido" name = "Contenido" rows = 5 value = "{{ $review -> Contenido }}"> </textarea>
+            <textarea id= "Contenido" name = "Contenido" rows = 5 > {{ $review -> Contenido }}</textarea>
             <label for="email"> Puntuación (0-10)</label>    
-            <input id = "div-inicioDeSesion-form-input" name = "Puntuacion" type = "number"  required = true min= 0 max = 10 value = "{{ $review->Puntuacion_Reseña }} ">
+            <input id = "div-inicioDeSesion-form-input" name = "Puntuacion" type = "number"  required = true min= 0 max = 10 value = "{{ $review->Puntuacion_Reseña }}">
                 <button type = "submit" class = "boton-peticion" title = "Modificar reseña"> =C </button>
             </form>
     <a href = "/menuLogin"> Volver al perfil </a>

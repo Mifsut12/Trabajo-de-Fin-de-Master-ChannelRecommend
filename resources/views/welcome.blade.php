@@ -37,6 +37,35 @@
                 <input id = ".div-inicioDeSesion-form-submit " value = "Iniciar sesión"type = "submit" > 
             </form>
         </div>
+
+        <div class = "div-recomendadciones">
+            @if(count($mejoresProgramas) > 0)
+                <h2 class = "div-recomendacions-h2"> Programas mejor valorados por los usuarios</h2>
+                <table>
+                    <th>
+                        <tr>
+                            <td>Nombre</td>
+                        </tr>
+                    </th>
+                    @foreach($mejoresProgramas as $programa)
+                        <tr>
+                            <td>{{ $programa->name }}</td>     
+                            <td>
+                                <a class="enlaces" style = "display: inline-block" href="/programas/{{ $programa->id }}">-O</a>
+                            </td>
+                        </tr>
+                    
+                    @endforeach
+            </table>
+            @endif
+
+            @if($mejorCadena != null)
+                <h2 class = "div-recomendaciones"> La mejor cadena por los usuarios</h2>
+                <a class = "enlaces" href="/canales/{{ $mejorCadena -> id }}" > {{ $mejorCadena->name}}</a>
+ 
+            @endif
+        </div>     
+
     </main>
 
 

@@ -45,69 +45,115 @@
             @else
                 <h2> Nombre: {{ $canal-> name }} </h2>
                 <h2> Puntuación: {{ $canal-> Puntuacion_Global }} </h2>
-                @if (count($programas) > 0)
+                @if (count($proximasEmisiones) > 0)
     
-            <h1> Proximas emisiones de {{ $canal-> name }} </h1>
-            <table>
-                <th>
-                    <tr>
-                        <td>Nombre</td>
-                        <td>Fecha de transmision (Año-mes-dia)</td>
-                        <td>Hora de emision (Peninsular)</td>
-                        
-                    </tr>
-                </th>
-                @foreach($programas as $programa)
-                    <tr>
-                        <td>{{ $programa->name }}</td>
-                        <td>{{ $programa->Fecha_transmision }}</td>
-                        <td>{{ $programa->Hora_emision}}</td>
-                        
-                        <td>
-                            <a class="enlaces" style = "display: inline-block" href="/programas/{{ $programa->id }}">-O</a>
+                <h1> Proximas emisiones de {{ $canal-> name }} </h1>
+                <table>
+                    <th>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>Fecha de transmision (Año-mes-dia)</td>
+                            <td>Hora de emision (Peninsular)</td>
                             
-                        </td>
-                    </tr>
-                
-                @endforeach
-            </table>
-        @else
-            <h1> En estos momentos {{ $canal->name }} no tiene emisiones futuras </h1>
-        @endif
+                        </tr>
+                    </th>
+                    @foreach($programas as $programa)
+                        <tr>
+                            <td>{{ $programa->name }}</td>
+                            <td>{{ $programa->Fecha_transmision }}</td>
+                            <td>{{ $programa->Hora_emision}}</td>
+                            
+                            <td>
+                                <a class="enlaces" style = "display: inline-block" href="/programas/{{ $programa->id }}">-O</a>
+                                
+                            </td>
+                        </tr>
+                    
+                    @endforeach
+                </table>
+            @else
+                <h1> En estos momentos {{ $canal->name }} no tiene emisiones futuras </h1>
+            @endif
+
+            @if(count($mejoresProgramas) > 0)
+                <div class = "div-recomendadciones">
+                    <h2 class = "div-recomendacions-h2"> Programas mejor valorados por los usuarios de {{ $canal -> name }}</h2>
+                    <table>
+                        <th>
+                            <tr>
+                                <td>Nombre</td>
+                            </tr>
+                        </th>
+                        @foreach($mejoresProgramas as $programa)
+                            <tr>
+                                <td>{{ $programa->name }}</td>     
+                                <td>
+                                    <a class="enlaces" style = "display: inline-block" href="/programas/{{ $programa->id }}">-O</a>
+                                </td>
+                            </tr>
+                        
+                        @endforeach
+                    </table>
+                </div>
+            @endif
 
             @endif
         @else 
             <h2> Nombre: {{ $canal-> name }} </h2>
             <h2> Puntuación: {{ $canal-> Puntuacion_Global }} </h2>
-            @if (count($programas) > 0)
+            @if (count($proximasEmisiones) > 0)
     
-            <h1> Proximas emisiones de {{ $canal-> name }} </h1>
-            <table>
-                <th>
-                    <tr>
-                        <td>Nombre</td>
-                        <td>Fecha de transmision (Año-mes-dia)</td>
-                        <td>Hora de emision (Peninsular)</td>
-                        
-                    </tr>
-                </th>
-                @foreach($programas as $programa)
-                    <tr>
-                        <td>{{ $programa->name }}</td>
-                        <td>{{ $programa->Fecha_transmision }}</td>
-                        <td>{{ $programa->Hora_emision}}</td>
-                        
-                        <td>
-                            <a class="enlaces" style = "display: inline-block" href="/programas/{{ $programa->id }}">-O</a>
+                <h1> Proximas emisiones de {{ $canal-> name }} </h1>
+                <table>
+                    <th>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>Fecha de transmision (Año-mes-dia)</td>
+                            <td>Hora de emision (Peninsular)</td>
                             
-                        </td>
-                    </tr>
-                
-                @endforeach
-            </table>
-        @else
+                        </tr>
+                    </th>
+                    @foreach($programas as $programa)
+                        <tr>
+                            <td>{{ $programa->name }}</td>
+                            <td>{{ $programa->Fecha_transmision }}</td>
+                            <td>{{ $programa->Hora_emision}}</td>
+                            <td>
+                                <a class="enlaces" style = "display: inline-block" href="/programas/{{ $programa->id }}">-O</a>
+                            </td>
+                        </tr>                    
+                    @endforeach
+                </table>
+                @else
             <h1> En estos momentos {{ $canal->name }} no tiene emisiones futuras </h1>
-        @endif
+            @endif
+
+            
+
+            
+            @if(count($mejoresProgramas) > 0)
+                <div class = "div-recomendadciones">
+                    <h2 class = "div-recomendacions-h2"> Programas mejor valorados por los usuarios de {{ $canal -> name }}</h2>
+                    <table>
+                        <th>
+                            <tr>
+                                <td>Nombre</td>
+                            </tr>
+                        </th>
+                        @foreach($mejoresProgramas as $programa)
+                            <tr>
+                                <td>{{ $programa->name }}</td>     
+                                <td>
+                                    <a class="enlaces" style = "display: inline-block" href="/programas/{{ $programa->id }}">-O</a>
+                                </td>
+                            </tr>
+                        
+                        @endforeach
+                    </table>
+                </div>
+            @endif
+
+           
 
         @endif
     @else

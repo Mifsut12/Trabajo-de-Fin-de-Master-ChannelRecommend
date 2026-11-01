@@ -185,3 +185,20 @@ form {
 form > * {
     width: 100%;
 }
+
+
+.div-recomendadciones {
+    border: solid thick teal;
+    margin-top: 5%;
+    animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+
+    0%,100%{
+        border-color: teal;
+    }
+}
