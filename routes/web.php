@@ -52,7 +52,7 @@ Route::middleware(['auth', 'can:solo-admin'])->group(function (){
 
     Route::patch('/programas/{id}', [ProgramaController::class, 'actualizar']);
 
-    Route::get('/usuarios/nuevo', [Usuario::class, 'formularioCreacion']);//
+    Route::get('/usuarios/nuevo', function() { return view('crearUsuario');});//
 
     Route::get('/usuarios/{id}', [Usuario::class, 'especificar']);
 

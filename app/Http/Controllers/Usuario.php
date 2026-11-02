@@ -13,7 +13,7 @@ class Usuario extends Controller
 {
     //Función para la creación de un usuario
     public function registrar(Request $request){
-        if(Auth::user()->Admin == 1){
+        
             //Obtener los parametros del formulario
             $correo = $request->input('email');
             $password = $request->input('password');
@@ -36,88 +36,65 @@ class Usuario extends Controller
                     return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
                 }   
             }
-        }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
-        }
+        
     }
 
-    //Funcion para la obtención del formulario de creación de usuarios
-    public function formularioCreacion(){
-            
-        if(Auth::user()->Admin == 1){
-            return view('crearUsuario');
-        }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
-        }
-    }
+ 
    
     //Funcion para la obtención de los datos.
     public function consultar(){
-        if(Auth::user()->Admin == 1){
-            $usuarios = DB::table('usuarios')->orderBy('name')->get();
-            return view('verUsuarios')->with('usuarios', $usuarios);
-        }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
-        }
-        
+        $usuarios = DB::table('usuarios')->orderBy('name')->get();
+        return view('verUsuarios')->with('usuarios', $usuarios);
     }
     
    
     //Función dedicada a la obtención de los datos de un usuario
     public function especificar(string $id){
-        if(Auth::user()->Admin == 1){
-            $user = DB::table('usuarios')->where('id',$id)->first();
-            return view('datosUsuario')-> with('user', $user)->with('operacion');
-        }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
-        }
+        $user = DB::table('usuarios')->where('id',$id)->first();
+        return view('datosUsuario')-> with('user', $user)->with('operacion');
     }
 
 
     //Función dedicada al borrado de un usuario
     public function eliminar (string $id){
         //Comprobar permisos de usuario que ejecute la operacion.
-        if(Auth::user()->Admin == 1){
-            //Verificar que el usuario existe
-            $user = DB::table('usuarios')->where('id',$id)->first();
-            //En caso de que exista
-            if($user != null){
-                //Borrar
-                $user = DB::table('usuarios')->where('id',$id)->delete();
+        
+        //Verificar que el usuario existe
+        $user = DB::table('usuarios')->where('id',$id)->first();
+        //En caso de que exista
+        if($user != null){
+            //Borrar
+            $user = DB::table('usuarios')->where('id',$id)->delete();
 
-                return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
-            //caso contrario
-            }else{
-                return view('mensajeError')->with('mensaje','El usuario especificado no existe');
-            }
+            return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
+        //caso contrario
         }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
+            return view('mensajeError')->with('mensaje','El usuario especificado no existe');
         }
+        
             
     }
 
     public function actualizar (Request $request, string $id){
         
-        if(Auth::user()->Admin == 1){
-            $user = User::where('id', $id)->first();
+        
+        $user = User::where('id', $id)->first();
 
-            
-            $correoRepetido = User::where('email', $request->input('email'))->where('id', '!=', $id) ->exists();
-            //Caso de que el correo sea el del usuario a modificar
-            if($user && !$correoRepetido){
-                $user->name = $request->input('nombre');
-                $user->email = $request->input('email');
-                $user->password = $request->input('password');
+        
+        $correoRepetido = User::where('email', $request->input('email'))->where('id', '!=', $id) ->exists();
+        //Caso de que el correo sea el del usuario a modificar
+        if($user && !$correoRepetido){
+            $user->name = $request->input('nombre');
+            $user->email = $request->input('email');
+            $user->password = $request->input('password');
 
-                $user->save();
-                return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
-            }else{
-                return view('mensajeError')->with('mensaje','El correo ya esta seleccionado para otro usuario');
-
-            }
+            $user->save();
+            return view('mensajeExito')->with('mensaje','Operacion realizada exitosamente');
         }else{
-            return view('mensajeError')->with('mensaje','Acceso no autorizado');
+            return view('mensajeError')->with('mensaje','El correo ya esta seleccionado para otro usuario');
+
         }
+        
     }
 
 
